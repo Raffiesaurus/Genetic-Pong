@@ -16,9 +16,6 @@ class Pong:
         
         self.config.game_running = True
         
-        move_multiplier = 1
-        move_left = move_right = False
-        
         while self.config.game_running:
             clock.tick(self.config.fps)
             score_text = game_font.render('Score: ' + str(self.config.score), True, (255, 255, 255))
@@ -37,28 +34,15 @@ class Pong:
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE:
                         self.config.game_running = False
-                    if event.key == pygame.K_a or event.key == pygame.K_LEFT:
-                        move_left = True       
-                    if event.key == pygame.K_d or event.key == pygame.K_RIGHT:
-                        move_right = True
-                        
-                if event.type == pygame.KEYUP:
-                    if event.key == pygame.K_a or event.key == pygame.K_LEFT:
-                        move_left = False
-                    if event.key == pygame.K_d or event.key == pygame.K_RIGHT:
-                        move_right = False
+            
+            if (self.bat.pos_x + (self.bat.width / 2) > self.ball.pos_x and self.bat.pos_x >= 0) :
+                self.bat.pos_x -= self.bat.move_speed
                 
-                if move_left:
-                    move_multiplier = -1
-                elif move_right:
-                    move_multiplier = 1
-                else:
-                    move_multiplier = 0
-
-            self.bat.move(self.bat.move_speed * move_multiplier, self.config.screen_size[0])
+            if (self.bat.pos_x + (self.bat.width / 2) < self.ball.pos_x and self.bat.pos_x + self.bat.width <= self.config.screen_size[0]) :
+                self.bat.pos_x += self.bat.move_speed
             
             if (self.bat.check_collision(ball)):
-                if(self.config.hit_reset_delay<=0):
+                if(self.config.hit_reset_delay <= 0):
                     ball_hit_bat = True
                     self.config.score += 1
                     self.config.hit_reset_delay = 30

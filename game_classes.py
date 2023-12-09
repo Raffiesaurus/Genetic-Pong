@@ -13,6 +13,11 @@ class Ball:
     def move(self, screen_size, has_hit_bat):
         self.pos_x -= self.speed_x
         self.pos_y -= self.speed_y
+        
+        if has_hit_bat:
+            self.speed_x += (self.speed_x * 0.01)
+            self.speed_y += (self.speed_y * 0.01)
+                
         if (self.pos_x <= self.radius or self.pos_x >= screen_size[0] - self.radius):
             self.speed_x = -self.speed_x
         elif (self.pos_y <= self.radius or has_hit_bat):
@@ -35,7 +40,7 @@ class Bat:
         self.move_speed = 5
         self.width = 150
         self.height = 15
-        self.ga_coefficients = [0,0,0]
+        self.ga_coefficients = [0, 0, 0]
         self.ga_fitness = []
         self.color = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
         
@@ -51,9 +56,15 @@ class Bat:
         if self.pos_x + self.width > screen_width:
             self.pos_x = screen_width - self.width
             
-    def set_position(self, x, y):
+    def set_position(self, x, y, screen_width):
         self.pos_x = x
         self.pos_y = y
+        
+        if self.pos_x < 0:
+            self.pos_x = 0
+        
+        if self.pos_x + self.width > screen_width:
+            self.pos_x = screen_width - self.width
 
     def get_position(self):
         return (self.pos_x, self.pos_y)
@@ -63,7 +74,7 @@ class Bat:
     
     def check_collision(self, ball: Ball):
         
-        if(self.pos_y <= ball.pos_y + ball.radius) and (self.pos_x <= ball.pos_x and self.pos_x + self.width >= ball.pos_x):
+        if((self.pos_y - (self.height / 2)) <= (ball.pos_y + ball.radius)) and ((self.pos_x <= ball.pos_x) and ((self.pos_x + self.width) >= ball.pos_x)):
             return True
         else:
             return False
