@@ -22,18 +22,22 @@ class Pong:
         
         while self.config.game_running:
             clock.tick(self.config.fps)
-            self.screen.fill(self.config.bg_color)
             score_text = game_font.render('Score: ' + str(self.config.score), True, (255, 255, 255))
+            self.screen.fill(self.config.bg_color)
             self.screen.blit(score_text, (10, 5))
             pygame.draw.circle(self.screen, self.ball.color, self.ball.get_position(), self.ball.radius)
             pygame.draw.rect(self.screen, self.bat.color, self.bat.get_rect())
             pygame.display.flip()
+
+            ball_hit_bat = False
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.config.game_running = False
 
                 if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_ESCAPE:
+                        self.config.game_running = False
                     if event.key == pygame.K_a or event.key == pygame.K_LEFT:
                         move_left = True       
                     if event.key == pygame.K_d or event.key == pygame.K_RIGHT:
@@ -52,8 +56,22 @@ class Pong:
                 else:
                     move_multiplier = 0
 
-            self.bat.move(self.bat.move_speed * move_multiplier)  
-
+            self.bat.move(self.bat.move_speed * move_multiplier, self.config.screen_size[0])
+            
+            if (self.bat.check_collision(ball)):
+                if(self.config.hit_reset_delay<=0):
+                    ball_hit_bat = True
+                    self.config.score += 1
+                    self.config.hit_reset_delay = 30
+            
+            self.ball.move(self.config.screen_size, ball_hit_bat)
+            
+            if (self.config.hit_reset_delay > 0):
+                self.config.hit_reset_delay -= 1
+                
+            if (self.ball.speed_x == 0 and self.ball.speed_y == 0):
+                game_config.game_running = False
+            
 if __name__ == "__main__":
     pygame.init()
     game_font = pygame.font.SysFont("goudyoldstyle", 25)

@@ -10,14 +10,14 @@ class Ball:
         self.radius = 10
         self.color = (8, 146, 209)
 
-    def move(self, screen_width, screen_height, has_hit_bat):
-        self.pos_x += self.speed_x
-        self.pos_y += self.speed_y
-        if (self.pos_x <= self.radius or self.pos_x >= screen_width - self.radius):
+    def move(self, screen_size, has_hit_bat):
+        self.pos_x -= self.speed_x
+        self.pos_y -= self.speed_y
+        if (self.pos_x <= self.radius or self.pos_x >= screen_size[0] - self.radius):
             self.speed_x = -self.speed_x
         elif (self.pos_y <= self.radius or has_hit_bat):
             self.speed_y = -self.speed_y
-        elif (self.pos_y >= screen_height - self.radius):
+        elif (self.pos_y >= screen_size[1] - self.radius):
             self.speed_x = 0
             self.speed_y = 0
             
@@ -42,8 +42,14 @@ class Bat:
         for i in range(len(self.ga_coefficients)):
             self.ga_coefficients[i] = random.randint(0, 99999)
             
-    def move(self, x_change):
+    def move(self, x_change, screen_width):
         self.pos_x += x_change
+        
+        if self.pos_x < 0:
+            self.pos_x = 0
+        
+        if self.pos_x + self.width > screen_width:
+            self.pos_x = screen_width - self.width
             
     def set_position(self, x, y):
         self.pos_x = x
@@ -54,6 +60,13 @@ class Bat:
             
     def get_rect(self):
         return (self.pos_x, self.pos_y, self.width, self.height)
+    
+    def check_collision(self, ball: Ball):
+        
+        if(self.pos_y <= ball.pos_y + ball.radius) and (self.pos_x <= ball.pos_x and self.pos_x + self.width >= ball.pos_x):
+            return True
+        else:
+            return False
                 
 class Config:
     
@@ -61,7 +74,7 @@ class Config:
         self.clock = clock
         self.font = font
         self.screen_size = [960, 540]
-        self.bg_color = (8, 146, 209)
+        self.bg_color = (0, 0, 0)
         self.fps = 60
         self.score = 0
         self.hit_reset_delay = 0
