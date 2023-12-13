@@ -2,9 +2,7 @@ import pygame
 from game_classes import Ball, Bat, Config, StatsSave
 from genetic_algo import GeneticPong
 from typing import List
-import random
 import statistics
-import pandas as pd
 
 class Pong:
     
@@ -83,10 +81,11 @@ class Pong:
                     print('---------------------------------------------------------------------------------------')
                     print(f"Episode: {len(self.ai.episode_winners)}")
                     print(f"    Score: {self.config.score}")                
+                    print(f"    Coefficients: {best_bat.ga_coefficients}")    
                     print(f"    Best bat fitness: {statistics.mean(best_bat.ga_fitness)}")    
                     print(f"    Runtime: {runtime}")    
                     
-                    self.stats_saver.add_values(len(self.ai.episode_winners), self.config.score, best_bat.ga_fitness[0], best_bat.ga_fitness[1], best_bat.ga_fitness[2], statistics.mean(best_bat.ga_fitness), runtime)
+                    self.stats_saver.add_values(len(self.ai.episode_winners), self.config.score, best_bat.ga_coefficients[0], best_bat.ga_coefficients[1], best_bat.ga_coefficients[2], statistics.mean(best_bat.ga_fitness), runtime)
                                 
                 self.config.score = 0                
                                                                                                    
