@@ -7,7 +7,7 @@ import statistics
 class GeneticPong:
     
     def __init__(self):
-        self.episodes = 301
+        self.episodes = 300
         self.episode_win_score = 300
         self.ai_count = 10
         self.episode_winners: List[Bat] = []
@@ -58,7 +58,7 @@ class GeneticPong:
                 if self.should_mutate:
                     if(random.randint(1, 10) <= 5):
                         for i in range (len(bat.ga_coefficients)):
-                            bat.ga_coefficients[i] = best_bat.ga_coefficients[i] * random.uniform(0.7, 1.3) 
+                            bat.ga_coefficients[i] = best_bat.ga_coefficients[i] + random.uniform(-10, 10)
                     else:
                         bat.ga_coefficients = best_bat.ga_coefficients
                     self.bats.append(bat)

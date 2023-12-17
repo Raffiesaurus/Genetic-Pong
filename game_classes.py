@@ -1,5 +1,4 @@
 import random
-import statistics
 import pandas as pd
 import pygame
 import datetime
@@ -38,8 +37,44 @@ class Ball:
     def reset(self):
         self.pos_x = 0
         self.pos_y = 0
-        self.speed_x = 5
-        self.speed_y = 5
+        self.speed_x = 5.5
+        self.speed_y = 5.5
+        
+class PvPBall:
+
+    def __init__(self):
+        self.pos_x = 0
+        self.pos_y = 0
+        self.speed_x = 4
+        self.speed_y = 4
+        self.radius = 10
+        self.color = (8, 146, 209)
+
+    def move(self, screen_size, has_hit_bat):
+        self.pos_x -= self.speed_x
+        self.pos_y -= self.speed_y
+                
+        if (self.pos_x <= self.radius or self.pos_x >= screen_size[0] - self.radius):
+            self.speed_x = -self.speed_x
+        
+        if (has_hit_bat):
+            self.speed_y = -self.speed_y
+            self.speed_x += (self.speed_x * 0.01)
+            self.speed_y += (self.speed_y * 0.01)
+            
+    def set_position(self, x, y):
+        self.pos_x = x
+        self.pos_y = y
+        
+    def get_position(self):
+        return (self.pos_x, self.pos_y)
+    
+    def reset(self):
+        self.pos_x = 0
+        self.pos_y = 0
+        self.speed_x = 4
+        self.speed_y = 4
+
     
 class Bat:
     
@@ -75,6 +110,9 @@ class Bat:
         self.ga_coefficients[0] = bat_x
         self.ga_coefficients[1] = ball_x
         self.ga_coefficients[2] = ball_y
+        
+    def set_color(self, r, g, b):
+        self.color = (r, g, b)
 
     def get_position(self):
         return (self.pos_x, self.pos_y)
@@ -98,6 +136,7 @@ class Config:
         self.bg_color = (0, 0, 0)
         self.fps = 60
         self.score = 0
+        self.opp_score = 0
         self.hit_reset_delay = 0
         self.game_running = False
 

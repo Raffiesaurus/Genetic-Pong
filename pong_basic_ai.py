@@ -17,7 +17,7 @@ class Pong:
         self.config.game_running = True
         
         while self.config.game_running:
-            clock.tick(self.config.fps)
+            self.config.clock.tick(self.config.fps)
             score_text = game_font.render('Score: ' + str(self.config.score), True, (255, 255, 255))
             self.screen.fill(self.config.bg_color)
             self.screen.blit(score_text, (10, 5))
@@ -58,8 +58,8 @@ class Pong:
 if __name__ == "__main__":
     pygame.init()
     game_font = pygame.font.SysFont("goudyoldstyle", 25)
-    clock = pygame.time.Clock()
-    game_config = Config(clock, game_font)
+    timer = pygame.time
+    game_config = Config(timer, game_font)
     bat = Bat()
     ball = Ball()
     
