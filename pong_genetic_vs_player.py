@@ -32,7 +32,7 @@ class Pong:
             pygame.draw.rect(self.screen, self.genetic_bat.color, self.genetic_bat.get_rect())
             pygame.draw.rect(self.screen, self.player_bat.color, self.player_bat.get_rect())
             self.screen.blit(score_text, (10, 5))
-            self.screen.blit(opp_score_text, (800, 500))
+            self.screen.blit(opp_score_text, (750, 500))
             pygame.display.flip()
 
             ball_hit_bat = False
