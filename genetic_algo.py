@@ -9,7 +9,7 @@ class GeneticPong:
     def __init__(self):
         self.episodes = 300
         self.episode_win_score = 300
-        self.ai_count = 10
+        self.ai_count = 30
         self.episode_winners: List[Bat] = []
         self.current_winners: List[Bat] = []
         self.bat_width = 0

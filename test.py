@@ -25,7 +25,7 @@ print(coeff1.iat[-1])
 print(coeff2.iat[-1])
 print(coeff3.iat[-1])
 
-plt.rcParams['figure.figsize'] = [5, 3] # width, height
+plt.rcParams['figure.figsize'] = [5, 3]
 plt.subplots_adjust(bottom=0.2)
 plt.xlabel("Episode") 
 
